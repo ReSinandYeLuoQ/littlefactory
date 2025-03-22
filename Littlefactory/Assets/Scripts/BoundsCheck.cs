@@ -5,7 +5,7 @@ using UnityEngine;
 public class BoundsCheck : MonoBehaviour
 {
     //我之前照搬书上的基于镜头的边界检测脚本，啥也不用动
-    [HideInInspector]
+    [HideInInspector]//哇嗷！
     public bool offRight, offLeft, offUp, offDown;
     [Header("检视器中设置")]
     public float radius = -1f;//越大边界越靠里，负数的话边界就在屏幕外，游戏对象触碰到边界之后自毁
