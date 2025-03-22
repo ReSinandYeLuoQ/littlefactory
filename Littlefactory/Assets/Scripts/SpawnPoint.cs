@@ -14,13 +14,24 @@ public class SpawnPoint : MonoBehaviour
     public Vector3 shooterPosition;
     public Quaternion myRotation;
     public List<GameObject> ChanceTokens = new List<GameObject>();//用来存储标记物的列表
+    public static bool alreadyfire = false;
     void Start()
     {
         shooterPosition = shooter.transform.position;
         myRotation = transform.rotation;
-        InvokeRepeating("Fire", 0f, fireDistance);//根据预设值每隔一段时间发射一次
+        while (GameManager.startedgame == false)
+        {
+            InvokeRepeating("Fire", 0f, fireDistance);//根据预设值每隔一段时间发射一次
+        }
     }
-
+    private void Update()
+    {
+        if(alreadyfire = false&& GameManager.chanceCount == 0)
+        {
+            Fire();
+            alreadyfire = true;
+        }
+    }
     public void Fire()
     {
         if (GameManager.allowshoot == true)//防止在切换界面的时候发射子弹
@@ -36,5 +47,5 @@ public class SpawnPoint : MonoBehaviour
     {
         //处理标记物的函数
         //没写完，您请
-    }
+    }//我用别的函数处理了，这个是当个赛博遗址还是怎滴？
 }
