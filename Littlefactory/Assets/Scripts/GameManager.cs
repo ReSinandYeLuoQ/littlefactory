@@ -3,22 +3,22 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public static bool allowshoot = false; // ÔÊĞí·¢ÉäºÍ½øĞĞÇĞ¹Ø
-    public int startlevel; // µ±Ç°¹Ø¿¨ĞòºÅ
-    public Image blackone; // ½¥±äµÄÄÇÕÅºÚÉ«Ä»²¼
-    public GameObject activelevel; // ¸¸¶ÔÏó
-    public string[] levelline = { "level1", "level2", "level3", "level4", "level5", "level6", "level7", "level8", "level9", "level10", "level11", "level12" }; // ¹Ø¿¨ºÍÃû×ÖµÄ¶ÔÓ¦ÊıÁĞ
-    public int[] chanceCountlist = { 1, 1, 2, 1, 2, 2, 2, 3, 1, 1, 3, 5 };//Ê£Óà´ÎÊı
+    public static bool allowshoot = false; // å…è®¸å‘å°„å’Œè¿›è¡Œåˆ‡å…³
+    public int startlevel; // å½“å‰å…³å¡åºå·
+    public Image blackone; // æ¸å˜çš„é‚£å¼ é»‘è‰²å¹•å¸ƒ
+    public GameObject activelevel; // çˆ¶å¯¹è±¡
+    public string[] levelline = { "level1", "level2", "level3", "level4", "level5", "level6", "level7", "level8", "level9", "level10", "level11", "level12" }; // å…³å¡å’Œåå­—çš„å¯¹åº”æ•°åˆ—
+    public int[] chanceCountlist = { 1, 1, 2, 1, 2, 2, 2, 3, 1, 1, 3, 5 };//å‰©ä½™æ¬¡æ•°
     private GameObject[] GOb;
     private float fadeStartTime = 0;
     public static bool isFadingIn;
     public static bool isFadingOut;
-    private const float fadeDuration = 2f;//ºÚÆÁÊ±³¤
-    private const float initialDelay = 0.5f;//ºÚÆÁÇ°¼ä¸ô
+    private const float fadeDuration = 2f;//é»‘å±æ—¶é•¿
+    private const float initialDelay = 0.5f;//é»‘å±å‰é—´éš”
     private float delayStartTime;
-    public static int chanceCount;//Ê£Óà³¢ÊÔ´ÎÊı
+    public static int chanceCount;//å‰©ä½™å°è¯•æ¬¡æ•°
 
-    void Start() // ¿ªÊ¼µÄÊ±ºòÑ¡¹Ø
+    void Start() // å¼€å§‹çš„æ—¶å€™é€‰å…³
     {
         if (startlevel > 0 && startlevel <= levelline.Length)
         {
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
                 GOb[i] = GameObject.Find(levelline[i]);
                 if (GOb[i] == null)
                 {
-                    Debug.LogError($"Î´ÄÜÕÒµ½ÓÎÏ·¶ÔÏó: {levelline[i]}");
+                    Debug.LogError($"æœªèƒ½æ‰¾åˆ°æ¸¸æˆå¯¹è±¡: {levelline[i]}");
                 }
                 if (i != 0)
                 {
@@ -37,22 +37,22 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            activelevel = GOb[startlevel - 1]; // ³õÊ¼¹Ø¿¨Éè¶¨
-            //Levelchange(); // Ö´ĞĞ»»¹Øº¯Êı
+            activelevel = GOb[startlevel - 1]; // åˆå§‹å…³å¡è®¾å®š
+            //Levelchange(); // æ‰§è¡Œæ¢å…³å‡½æ•°
             isFadingOut = true;
         }
     }
 
-    void SetImageOpacity(float getcolor) // ±äÉ«º¯Êı
+    void SetImageOpacity(float getcolor) // å˜è‰²å‡½æ•°
     {
-        // È·±£Í¸Ã÷¶ÈÔÚ 0 µ½ 1 µÄ·¶Î§ÄÚ
+        // ç¡®ä¿é€æ˜åº¦åœ¨ 0 åˆ° 1 çš„èŒƒå›´å†…
         getcolor = Mathf.Clamp01(getcolor);
         Color color = blackone.color;
         color.a = getcolor;
         blackone.color = color;
     }
 
-    public void Levelchange() // »»¹Øº¯Êı
+    public void Levelchange() // æ¢å…³å‡½æ•°
     {
         startlevel = startlevel + 1;
         allowshoot = false;
@@ -62,13 +62,13 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R) == true && allowshoot == true)//Õâ¸öÖØ¿ªÏÖÔÚ»¹ÓĞÎÊÌâ
+        if (Input.GetKeyDown(KeyCode.R) == true && allowshoot == true)//è¿™ä¸ªé‡å¼€ç°åœ¨è¿˜æœ‰é—®é¢˜
         {
             startlevel = startlevel - 1;
             if (startlevel < 1)
             {
-                startlevel = 1; // ·ÀÖ¹ startlevel Ğ¡ÓÚ 1
-                Debug.LogError("¹Ø¿¨ĞòºÅ²»ÄÜĞ¡ÓÚ 1");
+                startlevel = 1; // é˜²æ­¢ startlevel å°äº 1
+                Debug.LogError("å…³å¡åºå·ä¸èƒ½å°äº 1");
                 return;
             }
             Levelchange();
@@ -98,20 +98,20 @@ public class GameManager : MonoBehaviour
 
                 if (startlevel - 2 >= 0 && startlevel - 2 < GOb.Length && GOb[startlevel - 2] != null)
                 {
-                    GOb[startlevel - 2].SetActive(false); // È»ºó½«Ö®Ç°µÄ¹Ø¿¨Ê§»î
+                    GOb[startlevel - 2].SetActive(false); // ç„¶åå°†ä¹‹å‰çš„å…³å¡å¤±æ´»
                 }
                 else
                 {
-                    Debug.LogError($"ÎŞ·¨ÉèÖÃ¹Ø¿¨Îª·Ç¼¤»î×´Ì¬£¬¿ÉÄÜÊÇË÷ÒıÔ½½ç»ò¶ÔÏóÎª null£¬startlevel: {startlevel}");
+                    Debug.LogError($"æ— æ³•è®¾ç½®å…³å¡ä¸ºéæ¿€æ´»çŠ¶æ€ï¼Œå¯èƒ½æ˜¯ç´¢å¼•è¶Šç•Œæˆ–å¯¹è±¡ä¸º nullï¼Œstartlevel: {startlevel}");
                 }
 
                 if (startlevel - 1 >= 0 && startlevel - 1 < GOb.Length && GOb[startlevel - 1] != null)
                 {
-                    GOb[startlevel - 1].SetActive(true); // ²¢Ê¹Æä»î¶¯
+                    GOb[startlevel - 1].SetActive(true); // å¹¶ä½¿å…¶æ´»åŠ¨
                 }
                 else
                 {
-                    Debug.LogError($"ÎŞ·¨ÉèÖÃ¹Ø¿¨Îª¼¤»î×´Ì¬£¬¿ÉÄÜÊÇË÷ÒıÔ½½ç»ò¶ÔÏóÎª null£¬startlevel: {startlevel}");
+                    Debug.LogError($"æ— æ³•è®¾ç½®å…³å¡ä¸ºæ¿€æ´»çŠ¶æ€ï¼Œå¯èƒ½æ˜¯ç´¢å¼•è¶Šç•Œæˆ–å¯¹è±¡ä¸º nullï¼Œstartlevel: {startlevel}");
                 }
 
                 isFadingIn = false;
@@ -151,11 +151,11 @@ public class GameManager : MonoBehaviour
 
     public void FadeIn()
     {
-        // Âß¼­ÔÚ Update ÖĞ´¦Àí
+        // é€»è¾‘åœ¨ Update ä¸­å¤„ç†
     }
 
     public void FadeOut()
     {
-        // Âß¼­ÔÚ Update ÖĞ´¦Àí
+        // é€»è¾‘åœ¨ Update ä¸­å¤„ç†
     }
 }

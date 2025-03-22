@@ -4,6 +4,7 @@ public class Projectile : MonoBehaviour
 {
     [Header("动态设置")]
     public float speed;
+    public float color = 0;
     void Update()
     {
         if(GameManager.allowshoot == true)

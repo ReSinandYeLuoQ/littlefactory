@@ -13,9 +13,13 @@ public class Arrow : MonoBehaviour
     public int Rotote;//从0-3选择一个数，顺时针旋转90*输入的角度
     private float zset =0f;
     public SpriteRenderer sr;
+    public AudioSource audioSource;//我草啊as是个关键字
+    public AudioClip arrowSound;
+    public AudioClip debugSound;
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
         ChangeColor();
         xset = xlist[xLine - 1];
         yset = ylist[yLine - 1];
@@ -32,6 +36,8 @@ public class Arrow : MonoBehaviour
         {
             coll.transform.position = transform.position;//把子弹移到转向器自身位置，不加这行子弹会偏移
             coll.transform.rotation = transform.rotation;//让子弹转向，检视器中三角是什么方向子弹就向哪边飞
+            audioSource.clip = arrowSound;
+            audioSource.Play();
         }
     }
     void OnMouseDown()
@@ -41,7 +47,9 @@ public class Arrow : MonoBehaviour
         {
             hasBug = false;
             ChangeColor();
-            GameManager.chanceCount--;
+            GameManager.chanceCount--; 
+            audioSource.clip = debugSound;
+            audioSource.Play();
         }
     }
 
