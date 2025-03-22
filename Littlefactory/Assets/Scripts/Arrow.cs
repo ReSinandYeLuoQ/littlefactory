@@ -4,11 +4,25 @@ public class Arrow : MonoBehaviour
 {
     [Header("在检视器中设置")]
     public bool hasBug;
+    public int xLine;
+    public float[] xlist = { -8f, -6f, -4f, -2f,0f, 2f, 4f, 6f ,8f};
+    private float xset;
+    public int yLine;
+    public float[] ylist = { 3.6f,2.4f,1.2f,0f,-1.2f,-2.4f,-3.6f };
+    private float yset;
+    public int Rotote;//从0-3选择一个数，顺时针旋转90*输入的角度
+    private float zset =0f;
     public SpriteRenderer sr;
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
         ChangeColor();
+        xset = xlist[xLine - 1];
+        yset = ylist[yLine - 1];
+        Vector3 vec = new Vector3 (xset, yset, zset) ;
+        transform.position = vec;
+        float rotationAngle = -90f * Rotote;
+        transform.Rotate(0f, 0f, rotationAngle);
     }
 
     void OnTriggerEnter2D(Collider2D coll)
@@ -23,11 +37,11 @@ public class Arrow : MonoBehaviour
     void OnMouseDown()
     {
         //被点击时如果有bug则移除bug并更新颜色
-        if (hasBug&&SpawnPoint.chanceCount>0)
+        if (hasBug&&GameManager.chanceCount>0)
         {
             hasBug = false;
             ChangeColor();
-            SpawnPoint.chanceCount--;
+            GameManager.chanceCount--;
         }
     }
 

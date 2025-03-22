@@ -6,6 +6,9 @@ public class Projectile : MonoBehaviour
     public float speed;
     void Update()
     {
-        transform.Translate(Vector3.up * speed * Time.deltaTime);//每一帧根据速度值和子弹自身朝向移动一次，要动态修改子弹方向就更改子弹transform的朝向
+        if(GameManager.allowshoot == true)
+        {
+            transform.Translate(Vector3.up * speed * Time.deltaTime);//每一帧根据速度值和子弹自身朝向移动一次，要动态修改子弹方向就更改子弹transform的朝向
+        }
     }
 }
