@@ -9,7 +9,7 @@ public class Painter : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        switch (color)
+        switch (color)//根据颜色值决定染色器外观
         {
             case 1:
                 GetComponent<SpriteRenderer>().color = Color.blue;
@@ -27,7 +27,7 @@ public class Painter : MonoBehaviour
         if (coll.gameObject.tag == "Projectile")
         {
             audioSource.Play();
-            switch (color)
+            switch (color)//根据颜色值改编子弹外观并赋值，以便最后到达终点时进行判定
             {
                 case 1:
                     coll.GetComponent<SpriteRenderer>().color = Color.blue;
