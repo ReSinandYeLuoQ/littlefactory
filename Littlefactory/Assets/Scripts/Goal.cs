@@ -17,13 +17,13 @@ public class Goal : MonoBehaviour
         switch (filterColor)
         {
             case 1:
-                filter.GetComponent<SpriteRenderer>().color = UnityEngine.Color.blue;
+                filter.GetComponent<SpriteRenderer>().color = new UnityEngine.Color(80, 159, 126, 1);
                 break;
             case 2:
-                filter.GetComponent<SpriteRenderer>().color = new UnityEngine.Color(1, 0, 1, 1);
+                filter.GetComponent<SpriteRenderer>().color = new UnityEngine.Color(150, 80, 138, 1);
                 break;
             case 3:
-                filter.GetComponent<SpriteRenderer>().color = UnityEngine.Color.cyan;
+                filter.GetComponent<SpriteRenderer>().color = new UnityEngine.Color(80, 81, 159, 1);
                 break;
         }
     }

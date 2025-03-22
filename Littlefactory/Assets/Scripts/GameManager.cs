@@ -1,25 +1,34 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using NUnit.Framework;
 
 public class GameManager : MonoBehaviour
 {
     public static bool allowshoot = false; // 允许发射和进行切关
+    public static bool startedgame = false;
+    public float animationDelay = 0f;// 动画播放延迟时间（秒）
+    public float colorChangeDelay = 0.5f;// 变色延迟时间（秒）
     public int startlevel; // 当前关卡序号
     public Image blackone; // 渐变的那张黑色幕布
     public GameObject activelevel; // 父对象
-    public string[] levelline = { "level1", "level2", "level3", "level4", "level5", "level6", "level7", "level8", "level9", "level10", "level11", "level12" }; // 关卡和名字的对应数列
-    public int[] chanceCountlist = { 1, 1, 2, 1, 2, 2, 2, 3, 1, 1, 3, 5 };//剩余次数
+    public string[] levelline = { "level1", "level2", "level3", "level4", "level5", "level6",  "level8", "level9", "level10", "level11", "level12" }; // 关卡和名字的对应数列
+    public int[] chanceCountlist = { 1, 1, 2, 1, 2, 2, 2, 1, 1, 3, 4 };//剩余次数
     private GameObject[] GOb;
     private float fadeStartTime = 0;
-    public static bool isFadingIn;
-    public static bool isFadingOut;
+    public static bool isFadingIn;//渐变黑屏
+    public static bool isFadingOut;//解除渐变
     private const float fadeDuration = 2f;//黑屏时长
     private const float initialDelay = 0.5f;//黑屏前间隔
-    private float delayStartTime;
+    private float delayStartTime;//记录时间的工具变量
     public static int chanceCount;//剩余尝试次数
+    private chanceball[] balls;
 
+    [System.Obsolete]
     void Start() // 开始的时候选关
     {
+
+        balls = FindObjectsOfType<chanceball>();//ball就是剩余可使用次数
         if (startlevel > 0 && startlevel <= levelline.Length)
         {
             GOb = new GameObject[levelline.Length];
@@ -60,19 +69,9 @@ public class GameManager : MonoBehaviour
         isFadingIn = true;
     }
 
-    void Update()
+    [System.Obsolete]
+    void Update()//这一串基本上就是黑屏相关代码和切关相关代码了
     {
-        if (Input.GetKeyDown(KeyCode.R) == true && allowshoot == true)//这个重开现在还有问题
-        {
-            startlevel = startlevel - 1;
-            if (startlevel < 1)
-            {
-                startlevel = 1; // 防止 startlevel 小于 1
-                Debug.LogError("关卡序号不能小于 1");
-                return;
-            }
-            Levelchange();
-        }
         if (isFadingIn)
         {
             if (Time.time - delayStartTime < initialDelay)
@@ -94,7 +93,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 SetImageOpacity(1f);
-                Destroy(GameObject.FindWithTag("Projectile"));
+                
 
                 if (startlevel - 2 >= 0 && startlevel - 2 < GOb.Length && GOb[startlevel - 2] != null)
                 {
@@ -117,7 +116,9 @@ public class GameManager : MonoBehaviour
                 isFadingIn = false;
                 isFadingOut = true;
                 fadeStartTime = 0;
-                delayStartTime = Time.time;
+                
+
+
             }
         }
         else if (isFadingOut)
@@ -140,15 +141,57 @@ public class GameManager : MonoBehaviour
             }
             else
             {
+
                 SetImageOpacity(0f);
                 fadeStartTime = 0;
                 isFadingOut = false;
                 chanceCount = chanceCountlist[startlevel - 1];
+                SpawnPoint.alreadyfire = false;
                 allowshoot = true;
+#pragma warning disable CS0618 // 类型或成员已过时
+                Arrow[] arrows = GameObject.FindObjectsOfType<Arrow>();
+#pragma warning restore CS0618 // 类型或成员已过时
+                foreach (var item in arrows)
+                {
+                    item.hadused = false;
+                    if (item.hadBug == true)
+                    {
+                        item.Allnobug();
+                        // 启动协程来延迟播放动画
+                        StartCoroutine(PlayAnimationWithDelay(item, animationDelay));
+                        // 启动协程来延迟变色
+                        StartCoroutine(ChangeColorWithDelay(item, colorChangeDelay));
+                    }
+                }
+                Painter[] painters = GameObject.FindObjectsOfType<Painter>();
+                foreach (var item in painters)
+                {
+                    item.hadused = false;
+                }
+                Destroy(GameObject.FindWithTag("Projectile"));
+                delayStartTime = Time.time;
+                foreach (var item in balls)
+                {
+                    item.reback();
+                }
             }
         }
     }
+    IEnumerator PlayAnimationWithDelay(Arrow arrow, float delay)//这几个我都没看懂！我协程超烂的！
+    {
+        // 等待指定的延迟时间
+        yield return new WaitForSeconds(delay); 
+        arrow.am.Play("bug");
+        arrow.hasBug = true;
+    }
 
+    // 延迟变色的协程
+    IEnumerator ChangeColorWithDelay(Arrow arrow, float delay)
+    {
+        // 等待指定的延迟时间
+        yield return new WaitForSeconds(delay); 
+        arrow.sr.color = Color.red;
+    }
     public void FadeIn()
     {
         // 逻辑在 Update 中处理
