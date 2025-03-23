@@ -56,13 +56,13 @@ public class Arrow : MonoBehaviour
     void OnTriggerEnter2D(Collider2D coll)
     {
         //子弹进入时处理其位置和方向
-        if (!hasBug && coll.gameObject.tag == "Projectile"&& hadused == false)
+        if (!hasBug && coll.gameObject.tag == "Projectile"&& hadused == false||GameManager.startedgame == false)
         {
             coll.transform.position = transform.position;//把子弹移到转向器自身位置，不加这行子弹会偏移
             coll.transform.rotation = transform.rotation;//让子弹转向，检视器中三角是什么方向子弹就向哪边飞
             audioSource.clip = arrowSound;
             audioSource.Play();
-            if (!coll.GetComponent<Projectile>().firedDuringCutscene)
+            if (!coll.GetComponent<Projectile>().firedDuringCutscene)//判断是否应该在进入时记录其已经用过
             {
                 hadused = true;
             }

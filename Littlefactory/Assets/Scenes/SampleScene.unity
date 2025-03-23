@@ -4581,7 +4581,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: dc5ac169ced5a3d4fb3358585872f38e, type: 3}
   m_Resource: {fileID: 8300000, guid: dc5ac169ced5a3d4fb3358585872f38e, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -4924,7 +4924,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 5957954879037537914, guid: 2da4abc9328f11d4daee8cf60f8956d9, type: 3}
   shooter: {fileID: 1086084719}
   ChanceTokenPrefab: {fileID: 0}
-  projectileSpeed: 10
+  projectileSpeed: 15
   fireDistance: 1
   tempSG: 0
   shooterPosition: {x: 0, y: 0, z: 0}
@@ -8207,7 +8207,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1207685467
 RectTransform:
   m_ObjectHideFlags: 0

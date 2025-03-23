@@ -41,7 +41,7 @@ public class SpawnPoint : MonoBehaviour
         }
         if (GameManager.startedgame == false)
         {
-            tempSG = false;
+            tempSG = false;//这里是要让firedDuringCutscene的值取决于invoke的时机而不是函数调用的时机
             Invoke("Fire", fireDistance);
         }
         

@@ -165,7 +165,7 @@ public class GameManager : MonoBehaviour
                 {
                     item.hadused = false;
                 }
-                Destroy(GameObject.FindWithTag("Projectile"));
+                //Destroy(GameObject.FindWithTag("Projectile")); 我给所有子弹都加了属性来判断是否应该发挥功能，感觉应该没必要全删一次了？
                 delayStartTime = Time.time;
                 foreach (var item in balls)
                 {

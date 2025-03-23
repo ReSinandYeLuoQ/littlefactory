@@ -17,16 +17,18 @@ public class Goal : MonoBehaviour
     void OnTriggerEnter2D(Collider2D coll)
     {
         //子弹进入时判定过关
-        if (coll.gameObject.tag == "Projectile" && GameManager.allowshoot == true)//防止切屏的时候进入目标点
+        if (coll.gameObject.tag == "Projectile" )
         {
-            Debug.Log(filter.activeSelf);
             if (!filter.activeSelf || (filterActive && coll.GetComponent<Projectile>().color == filterColor))//过滤器判定，虽然这很不优雅但太长了我分两层写
             {
                 audioSource.Play();
                 Debug.Log(coll.GetComponent<Projectile>().color);
-                Destroy(coll.gameObject);
-                GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-                gameManager.Levelchange();
+                Destroy(coll.gameObject); ;
+                if (!coll.GetComponent<Projectile>().firedDuringCutscene && GameManager.allowshoot == true)//防止切屏的时候进入目标点，放在原来那个位置的话开场动画没法正常运行
+                {
+                    GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+                    gameManager.Levelchange();
+                }
             }
         }
     }
