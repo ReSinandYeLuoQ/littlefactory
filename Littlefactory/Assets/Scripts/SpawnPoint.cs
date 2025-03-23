@@ -11,6 +11,7 @@ public class SpawnPoint : MonoBehaviour
     public float projectileSpeed;//子弹速度
     public float fireDistance;//发射间隔
     [Header("动态设置")]
+    public bool tempSG;
     public Vector3 shooterPosition;
     public Quaternion myRotation;
     public List<GameObject> ChanceTokens = new List<GameObject>();//用来存储标记物的列表
@@ -19,33 +20,37 @@ public class SpawnPoint : MonoBehaviour
     {
         shooterPosition = shooter.transform.position;
         myRotation = transform.rotation;
-        while (GameManager.startedgame == false)
-        {
-            InvokeRepeating("Fire", 0f, fireDistance);//根据预设值每隔一段时间发射一次
-        }
-    }
-    private void Update()
-    {
-        if(alreadyfire = false&& GameManager.chanceCount == 0)
-        {
-            Fire();
-            alreadyfire = true;
-        }
+        Invoke("Fire", 0f);//根据预设值每隔一段时间发射一次
     }
     public void Fire()
     {
-        if (GameManager.allowshoot == true)//防止在切换界面的时候发射子弹
+        if (GameManager.allowshoot == true||GameManager.startedgame == false)//防止在切换界面的时候发射子弹
         {
             GameObject pGO = Instantiate(projectilePrefab, shooterPosition, myRotation);//把位置和方向赋给子弹
             Projectile projectile = pGO.GetComponent<Projectile>();
             projectile.speed = projectileSpeed;//获取子弹脚本并赋予速度
+            if(tempSG == false)
+            {
+                projectile.firedDuringCutscene = true;
+                tempSG = GameManager.startedgame;
+            }
+            else
+            {
+                projectile.firedDuringCutscene = false;
+            }
+        }
+        if (GameManager.startedgame == false)
+        {
+            tempSG = false;
+            Invoke("Fire", fireDistance);
         }
         
     }
 
-    public static void UpdateChanceToken()
+    /*public static void UpdateChanceToken()
     {
         //处理标记物的函数
         //没写完，您请
     }//我用别的函数处理了，这个是当个赛博遗址还是怎滴？
+    让它长眠在这里罢*/
 }

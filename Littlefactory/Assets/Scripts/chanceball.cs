@@ -3,26 +3,26 @@ using UnityEngine;
 
 public class chanceball : MonoBehaviour
 {
-    public float backDistance = 0.5f; // ºóÍËµÄ¾àÀë
-    public float backDuration = 0.2f; // ºóÍËµÄ³ÖĞøÊ±¼ä
-    public float shootSpeed = 10f; // Éä³öµÄËÙ¶È
-    public int number;//Õâ¸öÇòÊÇµÚ¼¸¸öÇò
-    public float transparency = 1f; // Í¸Ã÷¶ÈÖµ£¬·¶Î§ 0£¨ÍêÈ«Í¸Ã÷£©µ½ 1£¨ÍêÈ«²»Í¸Ã÷£©
+    public float backDistance = 0.5f; // åé€€çš„è·ç¦»
+    public float backDuration = 0.2f; // åé€€çš„æŒç»­æ—¶é—´
+    public float shootSpeed = 10f; // å°„å‡ºçš„é€Ÿåº¦
+    public int number;//è¿™ä¸ªçƒæ˜¯ç¬¬å‡ ä¸ªçƒ
+    public float transparency = 1f; // é€æ˜åº¦å€¼ï¼ŒèŒƒå›´ 0ï¼ˆå®Œå…¨é€æ˜ï¼‰åˆ° 1ï¼ˆå®Œå…¨ä¸é€æ˜ï¼‰
 
 
-    private Vector3 targetPosition;//Õâ¼¸ĞĞai´òµÄ£¬·´Õı×ÜµÄÀ´ËµÊÇÊµÏÖÒ»ÖÖ»÷ÖĞµÄĞ§¹û
+    private Vector3 targetPosition;//è¿™å‡ è¡Œaiæ‰“çš„ï¼Œåæ­£æ€»çš„æ¥è¯´æ˜¯å®ç°ä¸€ç§å‡»ä¸­çš„æ•ˆæœ
     private Vector3 startPosition;
     private bool isBacking = false;
     private bool isShooting = false;
     private float elapsedTime = 0f;
 
-    public void Start()//ÕâÒ»ÕûÆª´úÂë´ó²¿·Ö¶¼ÊÇÎÒÓÃAIÇÃµÄ£¬ÓĞÒ»µãÔÎÁËÒÑ¾­
+    public void Start()//è¿™ä¸€æ•´ç¯‡ä»£ç å¤§éƒ¨åˆ†éƒ½æ˜¯æˆ‘ç”¨AIæ•²çš„ï¼Œæœ‰ä¸€ç‚¹æ™•äº†å·²ç»
     {
         MeshRenderer renderer = GetComponent<MeshRenderer>();
         Material material = GetComponent<Renderer>().material;
-        // ÉèÖÃ²ÄÖÊÖ§³ÖÍ¸Ã÷¶È
+        // è®¾ç½®æè´¨æ”¯æŒé€æ˜åº¦
         SetMaterialToTransparent(material);
-        // ĞŞ¸Ä²ÄÖÊµÄÍ¸Ã÷¶È
+        // ä¿®æ”¹æè´¨çš„é€æ˜åº¦
         Color color = material.color;
         color.a = transparency;
         material.color = color;
@@ -38,7 +38,7 @@ public class chanceball : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
             float t = Mathf.Clamp01(elapsedTime / backDuration);
-            // ¼ÆËãºóÍËµÄ·½Ïò
+            // è®¡ç®—åé€€çš„æ–¹å‘
             Vector3 backDirection = (transform.position - targetPosition).normalized;
             transform.position = Vector3.Lerp(startPosition, startPosition + backDirection * backDistance, t);
 
@@ -51,27 +51,27 @@ public class chanceball : MonoBehaviour
         }
         else if (isShooting)
         {
-            // ³¯×ÅÄ¿±êÎ»ÖÃÉä³ö
+            // æœç€ç›®æ ‡ä½ç½®å°„å‡º
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, shootSpeed * Time.deltaTime);
 
             if (Vector3.Distance(transform.position, targetPosition) < 0.01f)
             {
-                // »ñÈ¡²ÄÖÊ
+                // è·å–æè´¨
                 transparency = 0;
             }
         }
     }
 
-    public void reback()//°Ñ·¢Éä³öÈ¥µÄÇòÖØĞÂ·Å»ØÀ´£¬ÁíÍâÒ»²¿·Ö´úÂëÓ¦¸ÃÔÚmanager
+    public void reback()//æŠŠå‘å°„å‡ºå»çš„çƒé‡æ–°æ”¾å›æ¥ï¼Œå¦å¤–ä¸€éƒ¨åˆ†ä»£ç åº”è¯¥åœ¨manager
     {
-        if(GameManager.chanceCount>=number)
-                this.GetComponent<Transform>().position= startPosition;
-                transparency = 1;
-        
+        if (GameManager.chanceCount >= number)
+            this.GetComponent<Transform>().position = startPosition;
+        transparency = 1;
+
     }
     void SetMaterialToTransparent(Material material)
     {
-        // ÉèÖÃ²ÄÖÊµÄäÖÈ¾Ä£Ê½ÎªÍ¸Ã÷
+        // è®¾ç½®æè´¨çš„æ¸²æŸ“æ¨¡å¼ä¸ºé€æ˜
         material.SetFloat("_Mode", 3);
         material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
         material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);

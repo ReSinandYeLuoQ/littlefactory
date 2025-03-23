@@ -12,12 +12,13 @@ public class GameManager : MonoBehaviour
     public int startlevel; // 当前关卡序号
     public Image blackone; // 渐变的那张黑色幕布
     public GameObject activelevel; // 父对象
-    public string[] levelline = { "level1", "level2", "level3", "level4", "level5", "level6",  "level8", "level9", "level10", "level11", "level12" }; // 关卡和名字的对应数列
+    public string[] levelline = { "level1", "level2", "level3", "level4", "level5", "level6", "level7", "level8", "level9", "level10", "level11" }; // 关卡和名字的对应数列
     public int[] chanceCountlist = { 1, 1, 2, 1, 2, 2, 2, 1, 1, 3, 4 };//剩余次数
+    public int[] filterColorList = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1 };//过滤器颜色，我不知道具体值后面全是瞎填的
     private GameObject[] GOb;
     private float fadeStartTime = 0;
-    public static bool isFadingIn;//渐变黑屏
-    public static bool isFadingOut;//解除渐变
+    public static bool isFadingIn = false;//渐变黑屏
+    public static bool isFadingOut = false;//解除渐变
     private const float fadeDuration = 2f;//黑屏时长
     private const float initialDelay = 0.5f;//黑屏前间隔
     private float delayStartTime;//记录时间的工具变量
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour
         if (startlevel > 0 && startlevel <= levelline.Length)
         {
             GOb = new GameObject[levelline.Length];
-            for (int i = 0; i < levelline.Length; i++)
+            for (int i = 0; i < levelline.Length-1; i++)
             {
                 Debug.Log(i);
                 GOb[i] = GameObject.Find(levelline[i]);
@@ -40,13 +41,14 @@ public class GameManager : MonoBehaviour
                 {
                     Debug.LogError($"未能找到游戏对象: {levelline[i]}");
                 }
-                if (i != 0)
+                else if (i != 0)
                 {
                     GOb[i].SetActive(false);
                 }
             }
 
             activelevel = GOb[startlevel - 1]; // 初始关卡设定
+            Goal.SetFilter(filterColorList[startlevel-1]);
             //Levelchange(); // 执行换关函数
             isFadingOut = true;
         }
@@ -127,7 +129,6 @@ public class GameManager : MonoBehaviour
             {
                 return;
             }
-
             if (fadeStartTime == 0)
             {
                 fadeStartTime = Time.time;
@@ -141,16 +142,12 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-
                 SetImageOpacity(0f);
                 fadeStartTime = 0;
                 isFadingOut = false;
                 chanceCount = chanceCountlist[startlevel - 1];
                 SpawnPoint.alreadyfire = false;
-                allowshoot = true;
-#pragma warning disable CS0618 // 类型或成员已过时
                 Arrow[] arrows = GameObject.FindObjectsOfType<Arrow>();
-#pragma warning restore CS0618 // 类型或成员已过时
                 foreach (var item in arrows)
                 {
                     item.hadused = false;
@@ -174,6 +171,8 @@ public class GameManager : MonoBehaviour
                 {
                     item.reback();
                 }
+                startedgame = true;
+                allowshoot = true;
             }
         }
     }

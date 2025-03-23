@@ -20,6 +20,7 @@ public class Arrow : MonoBehaviour
     public SpriteRenderer sr;
     public Animator am;
     public AudioSource audioSource;//我草啊as是个关键字
+    public GameObject spawnPoint;
     public AudioClip arrowSound;
     public AudioClip debugSound;
     private Animation arrowanimation;
@@ -31,6 +32,7 @@ public class Arrow : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         Allnobug();//初始状态：全蓝
         audioSource = GetComponent<AudioSource>();
+        spawnPoint = GameObject.Find("SpawnPoint");
         xset = xlist[xLine - 1];
         yset = ylist[yLine - 1];
         Vector3 vec = new Vector3 (xset, yset, zset) ;
@@ -60,7 +62,10 @@ public class Arrow : MonoBehaviour
             coll.transform.rotation = transform.rotation;//让子弹转向，检视器中三角是什么方向子弹就向哪边飞
             audioSource.clip = arrowSound;
             audioSource.Play();
-            hadused = true;
+            if (!coll.GetComponent<Projectile>().firedDuringCutscene)
+            {
+                hadused = true;
+            }
         }
     }
 
@@ -83,6 +88,12 @@ public class Arrow : MonoBehaviour
                 }
             }
             GameManager.chanceCount--;
+            if(GameManager.chanceCount <= 0)
+            {
+                Debug.Log(GameManager.allowshoot);
+                Debug.Log(GameManager.startedgame);
+                spawnPoint.GetComponent<SpawnPoint>().Fire();
+            }
             audioSource.clip = debugSound;
             audioSource.Play();
             am.Play("debug");
